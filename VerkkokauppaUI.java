@@ -9,7 +9,7 @@ public class VerkkokauppaUI {
         ui.aloita();
     }
 
-    public VerkkokauppaUI() {
+    public Verkkok auppaUI() {
         verkkokauppa = new Verkkokauppa();
         lukija = new Scanner(System.in);
     }

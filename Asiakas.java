@@ -53,4 +53,18 @@ public class Asiakas {
             return 15;
         }
     }
+
+    /**
+     * Palauttaa kaikki olion tiedot yhtenä merkkijonona.
+     * Datapisteet on erotettu toisistaan annetulla erotinmerkillä.
+     *
+     * @return kaikki olion tiedot yhdessä merkkijonossa
+     */
+    public String getData(String erotinmerkki) {
+        String data = asiakasNumero + erotinmerkki;
+        data += nimi + erotinmerkki;
+        data += ostojaTehty;
+
+        return data;
+    }
 }
