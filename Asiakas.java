@@ -67,4 +67,9 @@ public class Asiakas {
 
         return data;
     }
+
+    @Override
+    public String toString() {
+        return nimi + " (" + asiakasNumero + "), ostoja tehty: " + ostojaTehty;
+    }
 }
