@@ -1,4 +1,9 @@
-public class Tuote {
+import java.io.Serializable;
+
+public class Tuote implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String nimi;
     private int saldo;
     private double hinta;
@@ -44,6 +49,11 @@ public class Tuote {
     public void setHinta(double hinta) {
         if (hinta >= 0)
             this.hinta = hinta;
+    }
+
+    @Override
+    public String toString() {
+        return nimi + " (" + hinta + " euroa), saldo: " + saldo;
     }
 }
 

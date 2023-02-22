@@ -11,4 +11,9 @@ public class VirtuaalinenTuote extends Tuote {
         // tilaukseen
         return 1000;
     }
+
+    @Override
+    public String toString() {
+        return super.getNimi() + " (" + super.getHinta() + "), virtuaalinen tuote.";
+    }
 }

@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,10 +11,8 @@ import java.util.Scanner;
 public class VerkkokauppaIO {
 
     public static void main(String[] args) {
-        ArrayList<Asiakas> al = lueAsiakkaat("asiakkaat.csv");
-        for (Asiakas as : al) {
-            System.out.println(as);
-        }
+        // Tähän voi kirjoittaa koodia, jolla testata
+        // kirjoitus- ja lukumetodien toimintaa helposti
     }
 
     private static final String EROTIN = ";";
@@ -49,6 +45,12 @@ public class VerkkokauppaIO {
         return data;
     }
 
+    /**
+     * Kirjoittaa asiakaslistan annetun nimiseen tiedostoon.
+     *
+     * @param asiakasLista  lista kirjoitettavista asiakkaista.
+     * @param tiedostonNimi kirjoitettavan tiedoston nimi
+     */
     public static void kirjoitaAsiakkaat(ArrayList<Asiakas> asiakasLista,
                                          String tiedostonNimi) {
         String data = "";
@@ -97,5 +99,41 @@ public class VerkkokauppaIO {
             asiakkaat.add(as);
         }
         return asiakkaat;
+    }
+
+    /**
+     * Kirjoittaa tuotelistan annetun nimiseen tiedostoon.
+     *
+     * @param tuotelista    lista tuotteista
+     * @param tiedostonNimi kirjoitettavan tiedoston nimi
+     */
+    public static void kirjoitaTuotteet(ArrayList<Tuote> tuotelista, String tiedostonNimi) {
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(
+                             new FileOutputStream(tiedostonNimi))) {
+            oos.writeObject(tuotelista);
+        } catch (IOException e) {
+            System.out.println("Tapahtui virhe: " + e);
+        }
+    }
+
+    /**
+     * Lukee tuotelistan tiedostosta
+     *
+     * @param tiedostonNimi tiedoston nimi
+     * @return listan tuotteita
+     */
+    public static ArrayList<Tuote> lueTuotteet(String tiedostonNimi) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(tiedostonNimi))) {
+            ArrayList<Tuote> tlista = (ArrayList<Tuote>) ois.readObject();
+            return tlista;
+        } catch (IOException e) {
+            System.out.println("Tapahtui virhe: " + e);
+        } catch (ClassNotFoundException e) {
+            // Tämä virhe tulee, jos luettu tieto ei ole yhteensopiva
+            // sen luokan kanssa, jonka tyyppiseksi se yritetään muuntaa
+            System.out.println("Tapahtui virhe: " + e);
+        }
+        return null;
     }
 }
