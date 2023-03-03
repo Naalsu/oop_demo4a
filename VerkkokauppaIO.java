@@ -18,7 +18,7 @@ public class VerkkokauppaIO {
     private static final String EROTIN = ";";
 
     public static void kirjoitaTiedosto(String tiedostonNimi,
-                                        String sisalto) {
+            String sisalto) {
         try (PrintWriter tiedosto = new PrintWriter(tiedostonNimi)) {
             tiedosto.write(sisalto);
         } catch (FileNotFoundException e) {
@@ -52,11 +52,19 @@ public class VerkkokauppaIO {
      * @param tiedostonNimi kirjoitettavan tiedoston nimi
      */
     public static void kirjoitaAsiakkaat(ArrayList<Asiakas> asiakasLista,
-                                         String tiedostonNimi) {
+            String tiedostonNimi) {
         String data = "";
         for (Asiakas asiakas : asiakasLista) {
-            data += asiakas.getData(VerkkokauppaIO.EROTIN);
+            // käytetään instanceof tarkistamalla onko tietty asiakas kuuluu
+            // kanta-asiakas-listaan
+            if (asiakas instanceof KantaAsiakas) {
+                KantaAsiakas kantaAsiakas = (KantaAsiakas) asiakas;
+                data += kantaAsiakas.getKantaAsiakasData(VerkkokauppaIO.EROTIN);
+            } else {
+                data += asiakas.getData(VerkkokauppaIO.EROTIN);
+            }
             data += "\n";
+
         }
         // Poistetaan viimeinen "turha" rivinvaihto
         if (data.length() > 0) {
@@ -91,12 +99,17 @@ public class VerkkokauppaIO {
      * @param tiedostonNimi luettavan tiedoston nimi
      * @return tiedostosta luetut asiakasoliot listana
      */
+
     public static ArrayList<Asiakas> lueAsiakkaat(String tiedostonNimi) {
         ArrayList<Asiakas> asiakkaat = new ArrayList<>();
         ArrayList<String> data = lueTiedosto(tiedostonNimi);
         for (String adata : data) {
             Asiakas as = parsiAsiakas(adata);
-            asiakkaat.add(as);
+            if (as instanceof KantaAsiakas) {
+                asiakkaat.add((KantaAsiakas) as);
+            } else {
+                asiakkaat.add(as);
+            }
         }
         return asiakkaat;
     }
@@ -108,9 +121,8 @@ public class VerkkokauppaIO {
      * @param tiedostonNimi kirjoitettavan tiedoston nimi
      */
     public static void kirjoitaTuotteet(ArrayList<Tuote> tuotelista, String tiedostonNimi) {
-        try (ObjectOutputStream oos =
-                     new ObjectOutputStream(
-                             new FileOutputStream(tiedostonNimi))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(tiedostonNimi))) {
             oos.writeObject(tuotelista);
         } catch (IOException e) {
             System.out.println("Tapahtui virhe: " + e);

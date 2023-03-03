@@ -3,8 +3,7 @@ public class Asiakas {
     private String nimi;
     private double ostojaTehty;
 
-    public Asiakas(String asiakasNumero, String nimi,
-                   double ostojaTehty) {
+    public Asiakas(String asiakasNumero, String nimi, double ostojaTehty) {
         this.asiakasNumero = asiakasNumero;
         this.nimi = nimi;
         this.ostojaTehty = ostojaTehty;
